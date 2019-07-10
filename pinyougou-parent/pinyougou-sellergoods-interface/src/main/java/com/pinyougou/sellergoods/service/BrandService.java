@@ -1,7 +1,7 @@
 package com.pinyougou.sellergoods.service;
 
 import java.util.List;
-
+import java.util.Map;
 
 import com.pinyougou.pojo.TbBrand;
 
@@ -50,6 +50,13 @@ public interface BrandService {
 	 * @throws Exception
 	 */
 	public void delete(Long[] ids) throws Exception;
+	
+	
+	/**
+	 * 品牌下拉列表
+	 * @return
+	 */
+	List<Map> selectOptionList();
 	
 	
 }

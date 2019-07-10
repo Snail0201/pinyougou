@@ -45,8 +45,9 @@ public class SpecificationServiceImpl implements SpecificationService {
 	 * 增加
 	 */
 	@Override
-	public void add(TbSpecification specification) {
-		specificationMapper.insert(specification);		
+	public TbSpecification add(TbSpecification specification) {
+		specificationMapper.insert(specification);	
+		return specification;
 	}
 
 	
@@ -97,10 +98,6 @@ public class SpecificationServiceImpl implements SpecificationService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
-		@Override
-		public void findLastInsertId() {
-			specificationMapper
-			
-		}
+	
 	
 }

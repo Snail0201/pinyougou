@@ -23,8 +23,6 @@ public class SpecificationOptionController {
 	@Reference
 	private SpecificationOptionService specificationOptionService;
 	
-	@Reference
-	private SpecificationService specificationService;
 	
 	/**
 	 * 返回全部列表
@@ -53,8 +51,6 @@ public class SpecificationOptionController {
 	@RequestMapping("/add")
 	public Result add(@RequestBody TbSpecificationOption specificationOption){
 		try {
-			specificationService.findLastInsertId();
-			specificationOptionService.add(specificationOption);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();

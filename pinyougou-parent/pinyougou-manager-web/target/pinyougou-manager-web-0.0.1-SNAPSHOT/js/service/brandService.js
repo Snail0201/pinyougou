@@ -25,6 +25,10 @@ app.service("brandService",function($http){
 				return $http.post('/brand/findCondition.do?page='+currentPage+'&rows='+itemsPerPage,likeEntity)
 			}
 			
+			//下拉列表数据
+			this.selectOptionList=function(){
+				return $http.get('../brand/selectOptionList.do');
+			}
 			
 			
 		});

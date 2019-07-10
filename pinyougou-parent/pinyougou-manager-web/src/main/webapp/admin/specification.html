@@ -36,6 +36,18 @@
     			return $http.post('/specification/add.do?',entity);
     		}
     		
+    		//删除
+    		this.del=function(ids){
+    			return $http.get('/specification/delete.do?ids='+ids);
+    		}
+    		
+    		
+    		//更新
+    		this.update=function(fullEntity){
+    			return $http.post('/specification/update.do?',fullEntity);
+    		}
+    		
+    		
     	});
     	
     	app.service("specificationOptionService",function($http){
@@ -100,10 +112,17 @@
     		}
     		
     		//绑定全部参数
-    		$scope.fullEntity={$scope.entity,$scope.spOptionList}
+    		$scope.fullEntity={
+    				tbSpecification:$scope.entity,
+    				tbSpecificationOptions:$scope.spOptionList
+    				};
     		
     		//添加信息
     		$scope.add=function(){
+    			$scope.fullEntity={
+        				tbSpecification:$scope.entity,
+        				tbSpecificationOptions:$scope.spOptionList
+        				};
     			specificationService.add($scope.fullEntity).success(function(response){
     				if(response.success){
 						$scope.reloadList();
@@ -124,7 +143,54 @@
     			$scope.spOptionList.splice(index,1);
     		}
     		
+    		//绑定checkbox
+    		$scope.selectIds=[];
     		
+    		//更新ids
+    		$scope.updateIds=function(id){
+    			var index=$scope.selectIds.indexOf(id);
+    			if(index>=0){
+    				$scope.selectIds.splice(index,1);
+    			}else{
+    				$scope.selectIds.push(id);
+    			}
+    		}
+    		
+    		//删除操作
+    		$scope.del=function(){
+    			
+    			specificationService.del($scope.selectIds).success(function(response){
+    				if(response.success){
+						$scope.reloadList();
+					}else{
+						alert(response.message);
+					}
+    			});
+    		}
+    		
+    		//修改操作
+    		$scope.save=function(){
+    			if($scope.entity.id==null){
+    				$scope.add();
+    			}else{
+    				$scope.update();
+    			}
+    		}
+    		
+    		//更新操作
+    		$scope.update=function(){
+    			$scope.fullEntity={
+        				tbSpecification:$scope.entity,
+        				tbSpecificationOptions:$scope.spOptionList
+        				};
+    			specificationService.update($scope.fullEntity).success(function(response){
+    				if(response.success){
+						$scope.reloadList();
+					}else{
+						alert(response.message);
+					}
+    			});
+    		}
     		
     	});
     	
@@ -133,6 +199,7 @@
 </head>
 
 <body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="specificationController">
+
   <!-- .box-body -->                
                     <div class="box-header with-border">
                         <h3 class="box-title">规格管理</h3>
@@ -146,7 +213,7 @@
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal"  ng-click="clear()"><i class="fa fa-file-o"></i> 新建</button>
-                                        <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>
+                                        <button type="button" class="btn btn-default" title="删除" ng-click="del()"><i class="fa fa-trash-o"></i> 删除</button>
                                         
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
                                     </div>
@@ -154,7 +221,7 @@
                             </div>
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
-							                    规格名称：<input  ng-model="likeEntity.specName">									
+							                    规格名称：<input  ng-model="likeEntity.specName">								
 									<button class="btn btn-default" ng-click="reloadList()">查询</button>                                    
                                 </div>
                             </div>
@@ -173,7 +240,7 @@
 			                      </thead>
 			                      <tbody >
 			                          <tr ng-repeat="entity in list">
-			                              <td><input  type="checkbox" ></td>			                              
+			                              <td><input  type="checkbox" ng-click="updateIds(entity.id)"></td>			                              
 				                          <td>{{entity.id}}</td>
 									      <td>{{entity.specName}}</td>
 		                                  <td class="text-center">                                           
@@ -188,7 +255,8 @@
                         </div>
                         <!-- 数据表格 /--> 
                      </div>
-                    <!-- /.box-body -->                    
+                    <!-- /.box-body -->
+                                     
 	          		    
                                 
 <!-- 编辑窗口 -->
@@ -204,7 +272,7 @@
 			<table class="table table-bordered table-striped"  width="800px">
 		      	<tr>
 		      		<td>规格名称</td>
-		      		<td><input  class="form-control" placeholder="规格名称" ng-model="entity.specName">  </td>
+		      		<td><input  class="form-control" placeholder="规格名称" ng-model="entity.specName"> {{entity.id}} </td>
 		      	</tr>
 			 </table>				
 			 
@@ -240,7 +308,7 @@
 			
 		</div>
 		<div class="modal-footer">						
-			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="save()">保存</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>

@@ -1,6 +1,7 @@
 package com.pinyougou.sellergoods.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
@@ -76,6 +77,12 @@ public class BrandServiceImpl implements BrandService {
 			brandMapper.deleteByPrimaryKey(id);
 		}
 		
+	}
+
+	@Override
+	public List<Map> selectOptionList() {
+		// TODO Auto-generated method stub
+		return brandMapper.selectOptionList();
 	}
 
 }

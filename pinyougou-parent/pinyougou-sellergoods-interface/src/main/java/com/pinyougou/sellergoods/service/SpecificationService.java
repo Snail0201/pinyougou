@@ -27,7 +27,7 @@ public interface SpecificationService {
 	/**
 	 * 增加
 	*/
-	public void add(TbSpecification specification);
+	public TbSpecification add(TbSpecification specification);
 	
 	
 	/**
@@ -59,9 +59,6 @@ public interface SpecificationService {
 	public PageResult findPage(TbSpecification specification, int pageNum,int pageSize);
 	
 	
-	/**
-	 * 查询最新插入的id
-	 */
-	public void findLastInsertId();
+	
 	
 }
